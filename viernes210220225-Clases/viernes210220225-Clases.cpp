@@ -1,105 +1,95 @@
-// viernes210220225-Clases.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
-
 #include <iostream>
 using namespace std;
 
-// Clase Padre
-class Pastel {
+// Superclase
+class Flor {
 protected:
-    string sabor;
-    float precio;
+    string color;
+    string tamano;  // Cambié 'tamaño' por 'tamano' sin tilde
+    string fragancia;
+
 public:
-    Pastel(string sabor, float precio) : sabor(sabor), precio(precio) {}
-
-    virtual void mostrarInfo() {
-        cout << "Sabor: " << sabor << endl;
-        cout << "Precio: $" << precio << endl;
+    Flor(string c, string t, string f) : color(c), tamano(t), fragancia(f) {}
+    virtual void mostrarDatos() {
+        cout << "Color: " << color << "\nTamano: " << tamano << "\nFragancia: " << fragancia << endl;
     }
-
-    virtual ~Pastel() {} // Destructor virtual para herencia
-};
-
-// Clases hijas
-class PastelChocolate : public Pastel {
-private:
-    int porcentajeCacao;
-public:
-    PastelChocolate(float precio, int porcentajeCacao)
-        : Pastel("Chocolate", precio), porcentajeCacao(porcentajeCacao) {
-    }
-
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Porcentaje de cacao: " << porcentajeCacao << "%" << endl;
+    virtual void marchitar() {
+        cout << "La flor se ha marchitado." << endl;
     }
 };
 
-class PastelVainilla : public Pastel {
-private:
-    bool conCrema;
+// Subclase Rosa
+class Rosa : public Flor {
 public:
-    PastelVainilla(float precio, bool conCrema)
-        : Pastel("Vainilla", precio), conCrema(conCrema) {
+    Rosa(string c, string t, string f) : Flor(c, t, f) {}
+    void mostrarDatos() override {
+        cout << "--- Rosa ---\n";
+        Flor::mostrarDatos();
     }
-
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Con crema: " << (conCrema ? "Si" : "No") << endl;
+    void marchitar() override {
+        cout << "La rosa ha perdido sus petalos." << endl; // También cambié 'pétalos' por 'petalos'
     }
 };
 
-class PastelFresa : public Pastel {
-private:
-    int cantidadFresas;
+// Subclase Girasol
+class Girasol : public Flor {
 public:
-    PastelFresa(float precio, int cantidadFresas)
-        : Pastel("Fresa", precio), cantidadFresas(cantidadFresas) {
+    Girasol(string c, string t, string f) : Flor(c, t, f) {}
+    void mostrarDatos() override {
+        cout << "--- Girasol ---\n";
+        Flor::mostrarDatos();
     }
-
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Cantidad de fresas: " << cantidadFresas << endl;
+    void marchitar() override {
+        cout << "El girasol ha inclinado su cabeza." << endl;
     }
 };
 
-// Menú principal
+// Subclase Tulipan
+class Tulipan : public Flor {
+public:
+    Tulipan(string c, string t, string f) : Flor(c, t, f) {}
+    void mostrarDatos() override {
+        cout << "--- Tulipan ---\n";
+        Flor::mostrarDatos();
+    }
+    void marchitar() override {
+        cout << "El tulipan se ha secado." << endl;
+    }
+};
+
 int main() {
+    Rosa rosa("Rojo", "Mediano", "Dulce");
+    Girasol girasol("Amarillo", "Grande", "Suave");
+    Tulipan tulipan("Rosa", "Pequeno", "Ligera");  // Cambié 'Pequeño' por 'Pequeno' sin tilde
+
     int opcion;
     do {
-        cout << "\n--- Menu de Pasteles ---\n";
-        cout << "1. Pastel de Chocolate\n";
-        cout << "2. Pastel de Vainilla\n";
-        cout << "3. Pastel de Fresa\n";
-        cout << "4. Salir\n";
-        cout << "Elige una opcion: ";
+        cout << "\nMenu de Flores:" << endl;  // Cambié 'Menú' por 'Menu' sin tilde
+        cout << "1. Mostrar datos de la Rosa" << endl;
+        cout << "2. Mostrar datos del Girasol" << endl;
+        cout << "3. Mostrar datos del Tulipan" << endl;
+        cout << "4. Salir" << endl;
+        cout << "Seleccione una opcion: ";  // Cambié 'opción' por 'opcion' sin tilde
         cin >> opcion;
-
-        Pastel* miPastel = nullptr;
 
         switch (opcion) {
         case 1:
-            miPastel = new PastelChocolate(12.50, 70);
+            rosa.mostrarDatos();
             break;
         case 2:
-            miPastel = new PastelVainilla(10.99, true);
+            girasol.mostrarDatos();
             break;
         case 3:
-            miPastel = new PastelFresa(14.30, 5);
+            tulipan.mostrarDatos();
             break;
         case 4:
-            cout << "Saliendo del programa...\n";
+            cout << "Saliendo..." << endl;
             break;
         default:
-            cout << "Opcion no valida.\n";
-        }
-
-        if (miPastel) {
-            cout << "\n--- Informacion del pastel ---\n";
-            miPastel->mostrarInfo();
-            delete miPastel; // Liberar memoria
+            cout << "Opcion no valida." << endl;  // Cambié 'Opción' por 'Opcion' sin tilde
         }
     } while (opcion != 4);
 
     return 0;
 }
+
