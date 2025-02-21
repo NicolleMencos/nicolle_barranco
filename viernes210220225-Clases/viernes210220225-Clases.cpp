@@ -1,105 +1,163 @@
 // viernes210220225-Clases.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
-
 #include <iostream>
+#include <string>
 using namespace std;
 
-// Clase Padre
-class Pastel {
+// Superclase
+class Animal {
 protected:
-    string sabor;
-    float precio;
-public:
-    Pastel(string sabor, float precio) : sabor(sabor), precio(precio) {}
+    string nombre;
+    int edad;
+    string habitat;
 
-    virtual void mostrarInfo() {
-        cout << "Sabor: " << sabor << endl;
-        cout << "Precio: $" << precio << endl;
+public:
+    // Constructor
+    Animal(string nombre, int edad, string habitat)
+        : nombre(nombre), edad(edad), habitat(habitat) {
     }
 
-    virtual ~Pastel() {} // Destructor virtual para herencia
-};
-
-// Clases hijas
-class PastelChocolate : public Pastel {
-private:
-    int porcentajeCacao;
-public:
-    PastelChocolate(float precio, int porcentajeCacao)
-        : Pastel("Chocolate", precio), porcentajeCacao(porcentajeCacao) {
+    // Métodos
+    void comer() {
+        cout << nombre << " esta comiendo." << endl;
     }
 
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Porcentaje de cacao: " << porcentajeCacao << "%" << endl;
+    void dormir() {
+        cout << nombre << " esta durmiendo." << endl;
     }
 };
 
-class PastelVainilla : public Pastel {
+// Subclase 1: Mamifero
+class Mamifero : public Animal {
 private:
-    bool conCrema;
+    string tipoPelaje;
+
 public:
-    PastelVainilla(float precio, bool conCrema)
-        : Pastel("Vainilla", precio), conCrema(conCrema) {
+    // Constructor
+    Mamifero(string nombre, int edad, string habitat, string tipoPelaje)
+        : Animal(nombre, edad, habitat), tipoPelaje(tipoPelaje) {
     }
 
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Con crema: " << (conCrema ? "Si" : "No") << endl;
+    // Métodos específicos
+    void amamantar() {
+        cout << nombre << " esta amamantando a sus crías." << endl;
+    }
+
+    void correr() {
+        cout << nombre << " esta corriendo." << endl;
     }
 };
 
-class PastelFresa : public Pastel {
+// Subclase 2: Ave
+class Ave : public Animal {
 private:
-    int cantidadFresas;
+    string tipoPlumaje;
+    bool puedeVolar;
+
 public:
-    PastelFresa(float precio, int cantidadFresas)
-        : Pastel("Fresa", precio), cantidadFresas(cantidadFresas) {
+    // Constructor
+    Ave(string nombre, int edad, string habitat, string tipoPlumaje, bool puedeVolar)
+        : Animal(nombre, edad, habitat), tipoPlumaje(tipoPlumaje), puedeVolar(puedeVolar) {
     }
 
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Cantidad de fresas: " << cantidadFresas << endl;
+    // Métodos específicos
+    void volar() {
+        if (puedeVolar) {
+            cout << nombre << " esta volando." << endl;
+        }
+        else {
+            cout << nombre << " no puede volar." << endl;
+        }
+    }
+
+    void ponerHuevos() {
+        cout << nombre << " esta poniendo huevos." << endl;
+    }
+};
+
+// Subclase 3: Reptil
+class Reptil : public Animal {
+private:
+    string tipoEscamas;
+    bool esVenemoso;
+
+public:
+    // Constructor
+    Reptil(string nombre, int edad, string habitat, string tipoEscamas, bool esVenemoso)
+        : Animal(nombre, edad, habitat), tipoEscamas(tipoEscamas), esVenemoso(esVenemoso) {
+    }
+
+    // Métodos específicos
+    void arrastrarse() {
+        cout << nombre << " esta arrastrandose." << endl;
+    }
+
+    void mudarPiel() {
+        cout << nombre << " esta mudando la piel." << endl;
     }
 };
 
 // Menú principal
 int main() {
+    Mamifero* mamifero = nullptr;
+    Ave* ave = nullptr;
+    Reptil* reptil = nullptr;
     int opcion;
-    do {
-        cout << "\n--- Menu de Pasteles ---\n";
-        cout << "1. Pastel de Chocolate\n";
-        cout << "2. Pastel de Vainilla\n";
-        cout << "3. Pastel de Fresa\n";
-        cout << "4. Salir\n";
-        cout << "Elige una opcion: ";
+
+    while (true) {
+        cout << "\n--- Menu ---\n1. Crear Mamifero\n2. Crear Ave\n3. Crear Reptil\n4. Acciones\n5. Salir\nSeleccione: ";
         cin >> opcion;
+        cin.ignore(); // Limpiar el buffer de entrada
 
-        Pastel* miPastel = nullptr;
-
-        switch (opcion) {
-        case 1:
-            miPastel = new PastelChocolate(12.50, 70);
-            break;
-        case 2:
-            miPastel = new PastelVainilla(10.99, true);
-            break;
-        case 3:
-            miPastel = new PastelFresa(14.30, 5);
-            break;
-        case 4:
-            cout << "Saliendo del programa...\n";
-            break;
-        default:
-            cout << "Opcion no valida.\n";
+        if (opcion == 1) {
+            string nombre, habitat, tipoPelaje;
+            int edad;
+            cout << "Nombre: "; getline(cin, nombre);
+            cout << "Edad: "; cin >> edad;
+            cin.ignore();
+            cout << "Hábitat: "; getline(cin, habitat);
+            cout << "Tipo de pelaje: "; getline(cin, tipoPelaje);
+            mamifero = new Mamifero(nombre, edad, habitat, tipoPelaje);
         }
-
-        if (miPastel) {
-            cout << "\n--- Informacion del pastel ---\n";
-            miPastel->mostrarInfo();
-            delete miPastel; // Liberar memoria
+        else if (opcion == 2) {
+            string nombre, habitat, tipoPlumaje;
+            int edad;
+            bool puedeVolar;
+            cout << "Nombre: "; getline(cin, nombre);
+            cout << "Edad: "; cin >> edad;
+            cin.ignore();
+            cout << "Habitat: "; getline(cin, habitat);
+            cout << "Tipo de plumaje: "; getline(cin, tipoPlumaje);
+            cout << "¿Puede volar? (1 para Sí, 0 para No): "; cin >> puedeVolar;
+            cin.ignore();
+            ave = new Ave(nombre, edad, habitat, tipoPlumaje, puedeVolar);
         }
-    } while (opcion != 4);
+        else if (opcion == 3) {
+            string nombre, habitat, tipoEscamas;
+            int edad;
+            bool esVenemoso;
+            cout << "Nombre: "; getline(cin, nombre);
+            cout << "Edad: "; cin >> edad;
+            cin.ignore();
+            cout << "Habitat: "; getline(cin, habitat);
+            cout << "Tipo de escamas: "; getline(cin, tipoEscamas);
+            cout << "¿Es venenoso? (1 para Sí, 0 para No): "; cin >> esVenemoso;
+            cin.ignore();
+            reptil = new Reptil(nombre, edad, habitat, tipoEscamas, esVenemoso);
+        }
+        else if (opcion == 4) {
+            if (mamifero) { mamifero->comer(); mamifero->amamantar(); }
+            if (ave) { ave->comer(); ave->volar(); }
+            if (reptil) { reptil->comer(); reptil->arrastrarse(); }
+        }
+        else if (opcion == 5) {
+            break;
+        }
+        else {
+            cout << "Opcion no valida." << endl;
+        }
+    }
 
+    delete mamifero; delete ave; delete reptil;
     return 0;
 }
