@@ -1,105 +1,120 @@
-// viernes210220225-Clases.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
-
 #include <iostream>
+#include <string>
+
 using namespace std;
 
-// Clase Padre
-class Pastel {
+// Superclase
+class Maquillaje {
 protected:
-    string sabor;
-    float precio;
-public:
-    Pastel(string sabor, float precio) : sabor(sabor), precio(precio) {}
+    string marca;
+    string tipo;
+    string color;
 
-    virtual void mostrarInfo() {
-        cout << "Sabor: " << sabor << endl;
-        cout << "Precio: $" << precio << endl;
+public:
+    Maquillaje(string _marca, string _tipo, string _color)
+        : marca(_marca), tipo(_tipo), color(_color) {
     }
 
-    virtual ~Pastel() {} // Destructor virtual para herencia
+    virtual void mostrarDatos() {
+        cout << "Marca: " << marca << endl;
+        cout << "Tipo: " << tipo << endl;
+        cout << "Color: " << color << endl;
+    }
+
+    virtual void aplicar() {
+        cout << "Aplicando el producto de maquillaje...\n";
+    }
 };
 
-// Clases hijas
-class PastelChocolate : public Pastel {
+// Subclases
+class Labial : public Maquillaje {
 private:
-    int porcentajeCacao;
+    bool mate;
+
 public:
-    PastelChocolate(float precio, int porcentajeCacao)
-        : Pastel("Chocolate", precio), porcentajeCacao(porcentajeCacao) {
+    Labial(string _marca, string _color, bool _mate)
+        : Maquillaje(_marca, "Labial", _color), mate(_mate) {
     }
 
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Porcentaje de cacao: " << porcentajeCacao << "%" << endl;
+    void mostrarDatos() override {
+        Maquillaje::mostrarDatos();
+        cout << "Acabado mate: " << (mate ? "Sí" : "No") << endl;
+    }
+
+    void aplicar() override {
+        cout << "Aplicando labial en los labios...\n";
     }
 };
 
-class PastelVainilla : public Pastel {
+class Base : public Maquillaje {
 private:
-    bool conCrema;
+    string tipoPiel;
+
 public:
-    PastelVainilla(float precio, bool conCrema)
-        : Pastel("Vainilla", precio), conCrema(conCrema) {
+    Base(string _marca, string _color, string _tipoPiel)
+        : Maquillaje(_marca, "Base", _color), tipoPiel(_tipoPiel) {
     }
 
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Con crema: " << (conCrema ? "Si" : "No") << endl;
+    void mostrarDatos() override {
+        Maquillaje::mostrarDatos();
+        cout << "Tipo de piel: " << tipoPiel << endl;
+    }
+
+    void aplicar() override {
+        cout << "Aplicando base en el rostro...\n";
     }
 };
 
-class PastelFresa : public Pastel {
+class Sombra : public Maquillaje {
 private:
-    int cantidadFresas;
+    string textura;
+
 public:
-    PastelFresa(float precio, int cantidadFresas)
-        : Pastel("Fresa", precio), cantidadFresas(cantidadFresas) {
+    Sombra(string _marca, string _color, string _textura)
+        : Maquillaje(_marca, "Sombra", _color), textura(_textura) {
     }
 
-    void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Cantidad de fresas: " << cantidadFresas << endl;
+    void mostrarDatos() override {
+        Maquillaje::mostrarDatos();
+        cout << "Textura: " << textura << endl;
+    }
+
+    void aplicar() override {
+        cout << "Aplicando sombra en los ojos...\n";
     }
 };
 
-// Menú principal
+// Función principal con menú
 int main() {
     int opcion;
     do {
-        cout << "\n--- Menu de Pasteles ---\n";
-        cout << "1. Pastel de Chocolate\n";
-        cout << "2. Pastel de Vainilla\n";
-        cout << "3. Pastel de Fresa\n";
+        cout << "\n--- Menú de Maquillaje ---\n";
+        cout << "1. Crear y mostrar Labial\n";
+        cout << "2. Crear y mostrar Base\n";
+        cout << "3. Crear y mostrar Sombra\n";
         cout << "4. Salir\n";
-        cout << "Elige una opcion: ";
+        cout << "Seleccione una opción: ";
         cin >> opcion;
 
-        Pastel* miPastel = nullptr;
-
-        switch (opcion) {
-        case 1:
-            miPastel = new PastelChocolate(12.50, 70);
-            break;
-        case 2:
-            miPastel = new PastelVainilla(10.99, true);
-            break;
-        case 3:
-            miPastel = new PastelFresa(14.30, 5);
-            break;
-        case 4:
-            cout << "Saliendo del programa...\n";
-            break;
-        default:
-            cout << "Opcion no valida.\n";
+        if (opcion == 1) {
+            Labial labial("Maybelline", "Rojo", true);
+            labial.mostrarDatos();
+            labial.aplicar();
+        }
+        else if (opcion == 2) {
+            Base base("L'Oreal", "Beige", "Mixta");
+            base.mostrarDatos();
+            base.aplicar();
+        }
+        else if (opcion == 3) {
+            Sombra sombra("Revlon", "Azul", "Polvo");
+            sombra.mostrarDatos();
+            sombra.aplicar();
         }
 
-        if (miPastel) {
-            cout << "\n--- Informacion del pastel ---\n";
-            miPastel->mostrarInfo();
-            delete miPastel; // Liberar memoria
-        }
     } while (opcion != 4);
 
+    cout << "¡Gracias por usar el sistema de maquillaje!\n";
     return 0;
 }
+
