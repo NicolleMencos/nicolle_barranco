@@ -2,64 +2,73 @@
 //
 
 #include <iostream>
+#include <string>
 using namespace std;
 
 // Clase Padre
-class Pastel {
+class Zapatos {
 protected:
-    string sabor;
+    string marca;
+    string color;
+    string material;
+    int talla;
     float precio;
 public:
-    Pastel(string sabor, float precio) : sabor(sabor), precio(precio) {}
+    Zapatos(string marca, string color, string material, int talla, float precio)
+        : marca(marca), color(color), material(material), talla(talla), precio(precio) {
+    }
 
     virtual void mostrarInfo() {
-        cout << "Sabor: " << sabor << endl;
-        cout << "Precio: $" << precio << endl;
+        cout << "Marca: " << marca << endl;
+        cout << "Color: " << color << endl;
+        cout << "Material: " << material << endl;
+        cout << "Talla: " << talla << endl;
+        cout << "Precio: Q" << precio << endl;
     }
 
-    virtual ~Pastel() {} // Destructor virtual para herencia
+    virtual ~Zapatos() {}
 };
 
-// Clases hijas
-class PastelChocolate : public Pastel {
+// Clases Hijas
+class ZapatosDeportivos : public Zapatos {
 private:
-    int porcentajeCacao;
+    string deporte;
 public:
-    PastelChocolate(float precio, int porcentajeCacao)
-        : Pastel("Chocolate", precio), porcentajeCacao(porcentajeCacao) {
+    ZapatosDeportivos(string marca, string color, string material, int talla, float precio, string deporte)
+        : Zapatos(marca, color, material, talla, precio), deporte(deporte) {
     }
 
     void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Porcentaje de cacao: " << porcentajeCacao << "%" << endl;
+        Zapatos::mostrarInfo();
+        cout << "Deporte recomendado: " << deporte << endl;
     }
 };
 
-class PastelVainilla : public Pastel {
+class ZapatosFormales : public Zapatos {
 private:
-    bool conCrema;
+    string estilo;
 public:
-    PastelVainilla(float precio, bool conCrema)
-        : Pastel("Vainilla", precio), conCrema(conCrema) {
+    ZapatosFormales(string marca, string color, string material, int talla, float precio, string estilo)
+        : Zapatos(marca, color, material, talla, precio), estilo(estilo) {
     }
 
     void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Con crema: " << (conCrema ? "Si" : "No") << endl;
+        Zapatos::mostrarInfo();
+        cout << "Estilo: " << estilo << endl;
     }
 };
 
-class PastelFresa : public Pastel {
+class ZapatosCasuales : public Zapatos {
 private:
-    int cantidadFresas;
+    bool sonComodos;
 public:
-    PastelFresa(float precio, int cantidadFresas)
-        : Pastel("Fresa", precio), cantidadFresas(cantidadFresas) {
+    ZapatosCasuales(string marca, string color, string material, int talla, float precio, bool sonComodos)
+        : Zapatos(marca, color, material, talla, precio), sonComodos(sonComodos) {
     }
 
     void mostrarInfo() override {
-        Pastel::mostrarInfo();
-        cout << "Cantidad de fresas: " << cantidadFresas << endl;
+        Zapatos::mostrarInfo();
+        cout << "¿Son cómodos?: " << (sonComodos ? "Sí" : "No") << endl;
     }
 };
 
@@ -67,25 +76,25 @@ public:
 int main() {
     int opcion;
     do {
-        cout << "\n--- Menu de Pasteles ---\n";
-        cout << "1. Pastel de Chocolate\n";
-        cout << "2. Pastel de Vainilla\n";
-        cout << "3. Pastel de Fresa\n";
+        cout << "\n--- Menu de Zapatos ---\n";
+        cout << "1. Zapatos Deportivos\n";
+        cout << "2. Zapatos Formales\n";
+        cout << "3. Zapatos Casuales\n";
         cout << "4. Salir\n";
         cout << "Elige una opcion: ";
         cin >> opcion;
 
-        Pastel* miPastel = nullptr;
+        Zapatos* miZapato = nullptr;
 
         switch (opcion) {
         case 1:
-            miPastel = new PastelChocolate(12.50, 70);
+            miZapato = new ZapatosDeportivos("Nike", "Blanco", "Cuero", 42, 120.50, "Running");
             break;
         case 2:
-            miPastel = new PastelVainilla(10.99, true);
+            miZapato = new ZapatosFormales("Clarks", "Negro", "Piel", 43, 80.99, "Oxford");
             break;
         case 3:
-            miPastel = new PastelFresa(14.30, 5);
+            miZapato = new ZapatosCasuales("Vans", "Azul", "Lona", 41, 65.00, true);
             break;
         case 4:
             cout << "Saliendo del programa...\n";
@@ -94,10 +103,10 @@ int main() {
             cout << "Opcion no valida.\n";
         }
 
-        if (miPastel) {
-            cout << "\n--- Informacion del pastel ---\n";
-            miPastel->mostrarInfo();
-            delete miPastel; // Liberar memoria
+        if (miZapato) {
+            cout << "\n--- Informacion del zapato ---\n";
+            miZapato->mostrarInfo();
+            delete miZapato;
         }
     } while (opcion != 4);
 
